@@ -15,7 +15,7 @@ RUN passwd -d root && \
     echo "jenkins:jenkins" | chpasswd && \
     chown -R jenkins:jenkins /home/jenkins && \
     mkdir /var/jenkins_home && \
-    chown -R jenkins /var/jenkins_home && \
+    chown -R jenkins:jenkins /var/jenkins_home && \
     ssh-keygen -A
 
 EXPOSE 22
