@@ -1,0 +1,6 @@
+hs_err_pid*
+.idea
+out/
+.gradle
+build
+jenkins-docker-test.*
