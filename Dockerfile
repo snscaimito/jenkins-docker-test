@@ -10,7 +10,7 @@ FROM alpine
 MAINTAINER Dag Heradstveit <dagherad@gmail.com>
 
 # Install dependencies
-RUN apk upgrade --update --no-cache && apk add libstdc++ bash openjdk8
+RUN apk upgrade --update --no-cache && apk add libstdc++ bash openjdk8 gradle
 
 # Disable root, add jenkins user and create host keys
 RUN passwd -d root && \
@@ -18,5 +18,4 @@ RUN passwd -d root && \
     echo "jenkins:jenkins" | chpasswd && \
     chown -R jenkins:jenkins /home/jenkins && \
 
-ENTRYPOINT ["./gradlew"]
-
+CMD ["gradle"]
