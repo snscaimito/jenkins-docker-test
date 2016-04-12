@@ -38,4 +38,4 @@ RUN	curl -Lks https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}
 	rm -f /root/gradle.zip && \
     apk del curl
 
-CMD ["gradle", "-Dorg.gradle.native=false", "build"]
+ENTRYPOINT ["gradle", "-Dorg.gradle.native=false", "build"]
