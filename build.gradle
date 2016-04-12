@@ -1,18 +1,14 @@
 apply plugin: 'java'
 apply plugin: 'idea'
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.5'
-    distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+wrapper {
+    gradleVersion = "2.10"
 }
-
-sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
 }
 
-group = 'com.devbugger'
 description = 'Vaidates that a jenkins install can build inside docker containers.'
 
 jar {
@@ -22,4 +18,10 @@ jar {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+test {
+    testLogging {
+        events 'started', 'passed'
+    }
 }
