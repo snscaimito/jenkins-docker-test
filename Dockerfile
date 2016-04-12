@@ -30,4 +30,4 @@ RUN	curl -Lks https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}
 	ln -s gradle-${GRADLE_VERSION} gradle && \
 	rm -f /root/gradle.zip
 
-CMD ["gradle"]
+CMD ["gradle", "build"]
