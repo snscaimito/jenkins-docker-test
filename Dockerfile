@@ -9,12 +9,6 @@
 FROM alpine
 MAINTAINER Dag Heradstveit <dagherad@gmail.com>
 
-# Disable root, add jenkins user and create host keys
-RUN passwd -d root && \
-    adduser -D -s /bin/ash jenkins && \
-    echo "jenkins:jenkins" | chpasswd && \
-    chown -R jenkins:jenkins /home/jenkins
-
 # Install dependencies
 RUN apk upgrade --update --no-cache && apk add libstdc++ bash openjdk8 curl
 
@@ -25,6 +19,12 @@ RUN apk add --update ca-certificates && \
 
     apk add --allow-untrusted /tmp/glibc-bin-2.21-r2.apk && \
     /usr/glibc/usr/bin/ldconfig /lib /usr/glibc/usr/lib
+
+# Disable root, add jenkins user and create host keys
+RUN passwd -d root && \
+    adduser -h /var/jenkins_home -D -s /bin/ash jenkins && \
+    echo "jenkins:jenkins" | chpasswd && \
+    chown -R jenkins:jenkins /var/jenkins_home
 
 # Gradle
 ENV	GRADLE_HOME /opt/gradle
