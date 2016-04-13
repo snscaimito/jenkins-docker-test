@@ -1,5 +1,20 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+// tag::build[]
+        classpath('se.transmode.gradle:gradle-docker:1.2')
+// end::build[]
+    }
+}
+
 apply plugin: 'java'
 apply plugin: 'idea'
+apply plugin: 'docker'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 wrapper {
     gradleVersion = "2.10"
@@ -14,6 +29,9 @@ description = 'Vaidates that a jenkins install can build inside docker container
 jar {
     baseName = "jenkins-docker-test";
     version =  "1.0.0";
+    manifest {
+        attributes 'Main-Class': 'com.devbugger.jdt.JenkinsDockerTest'
+    }
 }
 
 dependencies {
@@ -25,3 +43,17 @@ test {
         events 'started', 'passed'
     }
 }
+
+// tag::task[]
+task buildDocker(type: Docker, dependsOn: build) {
+    push = true
+    applicationName = 'localhost:5000/'+jar.baseName
+    dockerfile = file('Dockerfile')
+    doFirst {
+        copy {
+            from jar
+            into stageDir
+        }
+    }
+}
+// end::task[]

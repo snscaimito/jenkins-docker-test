@@ -1,3 +1,5 @@
+package com.devbugger.jdt;
+
 /**
  * Created by Dag Østgulen Heradstveit.
  */

@@ -1,12 +1,12 @@
+package com.devbugger.jdt;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-/**
- * Created by Dag Østgulen Heradstveit.
- */
+
 @RunWith(JUnit4.class)
 public class CalcTest {
 
