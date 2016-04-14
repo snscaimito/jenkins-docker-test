@@ -1,18 +1,15 @@
 buildscript {
     repositories {
-        mavenLocal()
         mavenCentral()
     }
     dependencies {
-// tag::build[]
-        classpath('se.transmode.gradle:gradle-docker:1.2')
-// end::build[]
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.3.3.RELEASE")
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: 'docker'
+apply plugin: 'spring-boot'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -26,7 +23,7 @@ repositories {
     mavenCentral()
 }
 
-description = 'Vaidates that a jenkins install can build inside docker containers.'
+description = 'Simple demo project to build with jenkins.'
 
 jar {
     baseName = "jenkins-docker-test";
@@ -36,7 +33,14 @@ jar {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile("org.springframework.boot:spring-boot-starter-web") {
+        exclude module: "spring-boot-starter-tomcat"
+    }
+    compile("org.springframework.boot:spring-boot-starter-undertow")
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+
+    testCompile("junit:junit")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
 test {
@@ -44,17 +48,3 @@ test {
         events 'started', 'passed'
     }
 }
-
-// tag::task[]
-task buildDocker(type: Docker, dependsOn: build) {
-    push = true
-    applicationName = 'localhost:5000/'+jar.baseName
-    dockerfile = file('Dockerfile')
-    doFirst {
-        copy {
-            from jar
-            into stageDir
-        }
-    }
-}
-// end::task[]
