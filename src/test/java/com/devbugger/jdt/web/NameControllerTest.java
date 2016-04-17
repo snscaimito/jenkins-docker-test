@@ -38,7 +38,7 @@ public class NameControllerTest {
     }
 
     @Test
-    public void getIndex() throws Exception {
+    public void getOne() throws Exception {
         Name name = nameService.findOne(1L);
         mvc.perform(MockMvcRequestBuilders.get("/name/"+name.getId()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -47,7 +47,7 @@ public class NameControllerTest {
     }
 
     @Test
-    public void getCalc() throws Exception {
+    public void getAll() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/name/all").accept(MediaType.APPLICATION_JSON))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
