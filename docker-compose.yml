@@ -9,12 +9,20 @@ services:
       - db
     depends_on:
       - db
+    networks:
+      jdt:
   db:
     image: postgres
     container_name: db
     expose:
       - "5432"
+    networks:
+      jdt:
+        aliases:
+          - database
     environment:
       POSTGRES_DB: jenkinstest
       POSTGRES_USER: test
       POSTGRES_PASSWORD: test
+networks:
+  jdt:
