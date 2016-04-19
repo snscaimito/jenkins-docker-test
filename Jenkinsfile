@@ -21,11 +21,12 @@ node('docker-slave') {
     }
 
     stage 'Test image'
-    sh 'docker-compose up -d'
-    def ip = "\$(docker inspect --format '{{ .NetworkSettings.Networks.jenkinsdockertest_jdt.Gateway }}' jenkins-docker-test)"
-    sleep 10
-    sh "curl -# http://${ip}:9000/name/all"
-    sh 'docker-compose down'
-
+    docker.image('localhost:5000/docker-compose').inside('-v /var/run/docker.sock:/var/run/docker.sock') {
+        sh 'docker-compose up -d'
+        def ip = "\$(docker inspect --format '{{ .NetworkSettings.Networks.jenkinsdockertest_jdt.Gateway }}' jenkins-docker-test)"
+        sleep 15
+        sh "curl -# http://${ip}:9000/name/all"
+        sh 'docker-compose down'
+    }
 
 }
