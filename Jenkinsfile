@@ -4,7 +4,6 @@ node('docker-slave') {
     git branch: 'database', url: 'https://github.com/scav/jenkins-docker-test.git'
 
     stage 'Run tests'
-
     def db = docker.image('postgres').withRun('-p 5432:5432 -P --name db -e POSTGRES_DB=jenkinstest -e POSTGRES_USER=test -e POSTGRES_PASSWORD=test') { db ->
         docker.image('localhost:5000/gradle').inside('-P --name g2 --link db:db') {
             sh 'gradle clean build'
@@ -12,13 +11,7 @@ node('docker-slave') {
     }
 
     stage 'Build image'
-    docker.withRegistry('http://localhost:5000') {
-        def image =
-        docker.build("jenkins-docker-test:latest", '.')
-
-        stage 'Push image to registry'
-        image.push('latest')
-    }
+	sh  "docker build -t localhost:5000/jenkins-docker-test --build-arg HTTP_PROXY=${env.PROXY} . "
 
     stage 'Test image'
     docker.image('localhost:5000/docker-compose').inside('-v /var/run/docker.sock:/var/run/docker.sock') {
